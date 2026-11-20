@@ -20,7 +20,17 @@
       --tab:      #4e9bd8;   /* Tableau blue */
       --accent:   var(--pbi);
     }
-    body[data-tool="tableau"] { --accent: var(--tab); }
+    .card[data-tool="powerbi"] { --accent: var(--pbi); }
+    .card[data-tool="tableau"] { --accent: var(--tab); }
+    .card[hidden] { display: none; }
+    .tool-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .tool-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    .card-head { display: flex; flex-direction: column; gap: 4px; }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -142,6 +152,7 @@
     }
     .tab-btn:hover { color: var(--text); }
     .tab-btn .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .tab-btn[data-tool="all"] .dot { background: linear-gradient(135deg, var(--pbi) 50%, var(--tab) 50%); }
     .tab-btn[data-tool="powerbi"] .dot { background: var(--pbi); }
     .tab-btn[data-tool="tableau"] .dot { background: var(--tab); }
     .tab-btn[aria-selected="true"] { background: var(--surface2); color: var(--text); }
@@ -176,6 +187,7 @@
     .card-title { font-size: 1.05rem; font-weight: 600; }
     .card-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.7; flex: 1; }
     .card-note { font-size: 0.74rem; color: var(--muted); }
+    .card-note a { color: var(--text2); }
     .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
     .card-tags span {
       font-size: 0.66rem; padding: 2px 8px; border-radius: 4px;
@@ -230,7 +242,7 @@
     }
   </style>
 </head>
-<body data-tool="powerbi">
+<body>
 <div class="container">
 
   <!-- Hero -->
@@ -308,25 +320,54 @@
         <h2>Dashboards</h2>
       </div>
       <div class="tabs" role="tablist" aria-label="BI tool">
-        <button class="tab-btn" role="tab" data-tool="powerbi" aria-selected="true" aria-controls="panel-powerbi">
-          <span class="dot"></span>Power BI <span class="count mono">3</span>
+        <button class="tab-btn" role="tab" data-tool="all" aria-selected="true" aria-controls="project-grid">
+          <span class="dot"></span>All <span class="count mono"></span>
         </button>
-        <button class="tab-btn" role="tab" data-tool="tableau" aria-selected="false" aria-controls="panel-tableau">
-          <span class="dot"></span>Tableau <span class="count mono">1</span>
+        <button class="tab-btn" role="tab" data-tool="powerbi" aria-selected="false" aria-controls="project-grid">
+          <span class="dot"></span>Power BI <span class="count mono"></span>
+        </button>
+        <button class="tab-btn" role="tab" data-tool="tableau" aria-selected="false" aria-controls="project-grid">
+          <span class="dot"></span>Tableau <span class="count mono"></span>
         </button>
       </div>
     </div>
 
-    <!-- Power BI -->
-    <div class="panel" id="panel-powerbi" role="tabpanel">
-      <div class="grid">
+    <div class="grid" id="project-grid" role="tabpanel">
 
-        <article class="card">
+        <!-- Tableau: Code Blue -->
+        <article class="card" data-tool="tableau">
+          <a class="card-thumb" href="https://public.tableau.com/app/profile/yerke.salmurza/viz/CodeBlueEmergencyOperationsPatientFlowAnalytics/PatientFlowOverview" target="_blank" rel="noopener">
+            <img src="https://public.tableau.com/static/images/Co/CodeBlueEmergencyOperationsPatientFlowAnalytics/PatientFlowOverview/1.png" alt="Code Blue — Emergency Operations &amp; Patient Flow Analytics" loading="lazy" />
+          </a>
+          <div class="card-body">
+            <div class="card-head">
+              <span class="tool-badge mono">TABLEAU</span>
+              <h3 class="card-title">Code Blue — Emergency Operations &amp; Patient Flow</h3>
+            </div>
+            <p class="card-desc">
+              One-page dashboard for <strong>FP20 Analytics Challenge 38</strong> (with ZoomCharts).
+              Emergency care operations of 11 NHS and private hospitals in the UK, Jan 2024 – Dec 2025:
+              demand and bed occupancy over time, arrival peaks by hour and weekday, readmission by
+              hospital type, time to treatment by department and quality measures by hospital.
+              Filter by year, region, hospital type or hospital, or click any chart to cross-filter.
+            </p>
+            <div class="card-tags mono"><span>Excel · 11 sheets</span><span>~32.6K rows</span><span>Cross-filtering</span><span>Healthcare</span></div>
+            <div class="card-note">📂 Dataset: <a href="https://fp20analytics.com/live-challenge" target="_blank" rel="noopener">FP20 Analytics Challenge</a> — 9,994 patient visits, 9,919 staff shifts, 264 monthly financial records.</div>
+            <div class="card-links">
+              <a class="btn btn-primary" href="https://public.tableau.com/app/profile/yerke.salmurza/viz/CodeBlueEmergencyOperationsPatientFlowAnalytics/PatientFlowOverview" target="_blank" rel="noopener">Tableau Public ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-tool="powerbi">
           <a class="card-thumb" href="https://app.powerbi.com/view?r=eyJrIjoiYjU0MjdiYWYtZTUxMy00NGFlLWJkNmQtOTcwZjhmNGI5NGVmIiwidCI6ImRjY2FmMmM3LWI2NjgtNGIwZS1hMzg0LWYyNGY1MTQyMzNiYiJ9" target="_blank" rel="noopener">
             <img src="Power BI Dashboards/KPI Sales Tracker Dashboard/screenshots/01_plan-vs-actual.png" alt="KPI Sales Tracker Dashboard" loading="lazy" />
           </a>
           <div class="card-body">
-            <h3 class="card-title">KPI Sales Tracker Dashboard</h3>
+            <div class="card-head">
+              <span class="tool-badge mono">POWER BI</span>
+              <h3 class="card-title">KPI Sales Tracker Dashboard</h3>
+            </div>
             <p class="card-desc">
               Track sales plan execution across regions and months, and forecast the final
               year-end performance based on actual results and working days passed.
@@ -340,12 +381,15 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-tool="powerbi">
           <a class="card-thumb" href="https://app.powerbi.com/view?r=eyJrIjoiNDAzYWFmM2EtZjQzOC00OWUyLWE1ZGYtYzRlYzkzZjg4NDAyIiwidCI6ImRjY2FmMmM3LWI2NjgtNGIwZS1hMzg0LWYyNGY1MTQyMzNiYiJ9" target="_blank" rel="noopener">
             <img src="Power BI Dashboards/Sales Performance Dashboard/screenshots/target_performance.png" alt="Sales Performance Dashboard" loading="lazy" />
           </a>
           <div class="card-body">
-            <h3 class="card-title">Sales Performance Dashboard</h3>
+            <div class="card-head">
+              <span class="tool-badge mono">POWER BI</span>
+              <h3 class="card-title">Sales Performance Dashboard</h3>
+            </div>
             <p class="card-desc">
               Sales plan execution and year-end forecast across 4 products (Credit Card, Secured Loan,
               Cash Loan, Deposits) by region and period. Dynamic KPI cards with gauges, color-coded
@@ -360,12 +404,15 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" data-tool="powerbi">
           <a class="card-thumb" href="https://app.powerbi.com/reportEmbed?reportId=ff0813e1-8854-4197-a857-79e90619aa2d&autoAuth=true&ctid=dccaf2c7-b668-4b0e-a384-f24f514233bb" target="_blank" rel="noopener">
             <img src="Power BI Dashboards/Regional Sales Dashboard/screenshots/Monthly.png" alt="Regional Sales Dashboard" loading="lazy" />
           </a>
           <div class="card-body">
-            <h3 class="card-title">Regional Sales Dashboard</h3>
+            <div class="card-head">
+              <span class="tool-badge mono">POWER BI</span>
+              <h3 class="card-title">Regional Sales Dashboard</h3>
+            </div>
             <p class="card-desc">
               Sales analysis covering all 17 regions and key cities of Kazakhstan. Daily and monthly
               dynamics for Sales, Revenue, ARPU and Sales-to-Active %, with cohort survival tables
@@ -380,34 +427,6 @@
           </div>
         </article>
 
-      </div>
-    </div>
-
-    <!-- Tableau -->
-    <div class="panel" id="panel-tableau" role="tabpanel" hidden>
-      <div class="grid">
-
-        <article class="card">
-          <a class="card-thumb" href="https://public.tableau.com/app/profile/yerke.salmurza/viz/CodeBlueEmergencyOperationsPatientFlowAnalytics/PatientFlowOverview" target="_blank" rel="noopener">
-            <img src="https://public.tableau.com/static/images/Co/CodeBlueEmergencyOperationsPatientFlowAnalytics/PatientFlowOverview/1.png" alt="Code Blue — Emergency Operations &amp; Patient Flow Analytics" loading="lazy" />
-          </a>
-          <div class="card-body">
-            <h3 class="card-title">Code Blue — Emergency Operations &amp; Patient Flow</h3>
-            <p class="card-desc">
-              Emergency department analytics across 11 NHS and private hospitals (2024–2025).
-              Monthly visits and bed occupancy, arrivals heatmap by hour and day of week,
-              30-day readmission vs NHS target, time to treatment by department and
-              quality measures by hospital — with click-to-filter interactivity.
-            </p>
-            <div class="card-tags mono"><span>Tableau</span><span>Calculated Fields</span><span>Dashboard Actions</span><span>Healthcare</span></div>
-            <div class="card-note">🔒 Synthetic dataset based on real business logic.</div>
-            <div class="card-links">
-              <a class="btn btn-primary" href="https://public.tableau.com/app/profile/yerke.salmurza/viz/CodeBlueEmergencyOperationsPatientFlowAnalytics/PatientFlowOverview" target="_blank" rel="noopener">Tableau Public ↗</a>
-            </div>
-          </div>
-        </article>
-
-      </div>
     </div>
   </section>
 
@@ -425,21 +444,23 @@
 <script>
   (function () {
     var buttons = document.querySelectorAll('.tab-btn');
+    var cards = document.querySelectorAll('#project-grid .card');
+    buttons.forEach(function (b) {
+      var t = b.dataset.tool, n = 0;
+      cards.forEach(function (c) { if (t === 'all' || c.dataset.tool === t) n++; });
+      b.querySelector('.count').textContent = n;
+    });
     function select(tool, push) {
-      buttons.forEach(function (b) {
-        var on = b.dataset.tool === tool;
-        b.setAttribute('aria-selected', on);
-        document.getElementById('panel-' + b.dataset.tool).hidden = !on;
-      });
-      document.body.dataset.tool = tool;
-      if (push) history.replaceState(null, '', '#' + tool);
+      buttons.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.tool === tool); });
+      cards.forEach(function (c) { c.hidden = !(tool === 'all' || c.dataset.tool === tool); });
+      if (push) history.replaceState(null, '', tool === 'all' ? location.pathname : '#' + tool);
     }
     buttons.forEach(function (b) {
       b.addEventListener('click', function () { select(b.dataset.tool, true); });
     });
     function fromHash() {
       var h = location.hash.replace('#', '');
-      if (h === 'tableau' || h === 'powerbi') select(h, false);
+      select(h === 'tableau' || h === 'powerbi' ? h : 'all', false);
     }
     window.addEventListener('hashchange', fromHash);
     fromHash();
